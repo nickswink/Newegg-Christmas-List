@@ -3,10 +3,7 @@ import Appbar from './components/Appbar';
 import AvatarList from './components/AvatarList';
 import Grid from '@material-ui/core/Grid';
 
-
 const App = () => {
-  // const [items, setItems] = useState({});
-
   return (
     <>
       <Grid container>
