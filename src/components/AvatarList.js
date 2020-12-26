@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -6,6 +6,7 @@ import AvatarListItem from './AvatarListItem';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { fetchApi } from './api/api';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,14 +33,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // will be asynchronous function to api 
-const fetchItemDetails = (url) => {
-    let key = Math.ceil(Math.random() * 100);
-    let data = {
-        index: key.toString(),  // will need a real key later
-        itemName: 'Dell S2421HGF 24inch FHD TN, Anti-Glare Gaming Monitor - 1ms Response time, 1080p 144Hz, LED edgelight System, AMD FreeSync Premium, VESA, Gray',
-        availability: 'In stock',
-        price: '129.99',
-    };
+async function fetchItemDetails(url) {
+    let data = await fetchApi(url);
     return data;
 };
 
@@ -49,21 +44,21 @@ export default function AvatarList() {
     const [url, setUrl] = useState('');
     const [itemDetails, setItemDetails] = useState({});
     const [items, setItems] = useState([]);
-    // let processLink = () => {
-    //     
-    // };
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setItemDetails(await fetchItemDetails(url)); // will be asynchronous
+        console.log(itemDetails);
+        addItem(itemDetails);
+    };
+
 
     const addItem = (itemDetails) => {
         const newItems = [...items, itemDetails];
         setItems(newItems);
     };
 
-    let handleSubmit = (e) => {
-        e.preventDefault();
-        setItemDetails(fetchItemDetails(url)); // will be asynchronous
-        console.log(itemDetails);
-        addItem(itemDetails);
-    };
 
     let updateUrl = (e) => {
         setUrl(e.target.value);
@@ -75,23 +70,21 @@ export default function AvatarList() {
         setItems(newItems);
     };
 
-
     return (
         <div>
             <form className={classes.formControl} onSubmit={handleSubmit}>
-                <TextField id="outlined-basic" label="Amazon Url" variant="outlined" name='newItem' onChange={updateUrl} />
+                <TextField id="outlined-basic" label="Amazon Url" variant="outlined" name='newItem' value={url} onChange={updateUrl} />
                 <Button variant="contained" color="primary" type="submit" value="Submit">
                     <AddIcon className={classes.extendedIcon} />
                 </Button>
             </form>
-
 
             <List className={classes.root}>
                 {items.map((item, index) => (
                     <>
                         <AvatarListItem
                             itemDetails={item}
-                            key={index} index={index}
+                            key={index}
                             removeItem={removeItem}
                         />
                         <Divider variant="middle" component="li" />

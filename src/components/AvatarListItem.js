@@ -15,6 +15,10 @@ const useStyles = makeStyles(() => ({
             color: 'green',
         }
     },
+    price: {
+        display: 'inline',
+        color: 'green',
+    },
     items: {
         display: 'flex',
         alignItems: "flex-start",
@@ -34,27 +38,28 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const AvatarListItem = ({ removeItem, index, itemDetails: { itemName, price, availability } }) => {
+const AvatarListItem = ({ removeItem, index, itemDetails: { productTitle, productPrice, productAvailability } }) => {
     const classes = useStyles();
 
     return (
         <Paper className={classes.paper}>
             <ListItem className={classes.items}>
                 <ListItemText
-                    primary={itemName}
+                    primary={productTitle}
                     secondary={
                         <React.Fragment>
-                            Price:
+                            Price:&nbsp;
                             <Typography
-                                component="p"
+                                component="span"
                                 variant="body2"
                                 className={classes.inline}
                                 color='error'
                             >
-                                ${price}
-                                <Typography component="p">
-                                    {availability}
-                                </Typography>
+                                ${productPrice}
+                            </Typography>
+                            <br />
+                            <Typography component="span" className={classes.price}>
+                                {productAvailability}
                             </Typography>
                         </React.Fragment>
                     }
