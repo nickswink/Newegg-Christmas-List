@@ -27,23 +27,30 @@ const useStyles = makeStyles(() => ({
 
     },
     paper: {
-        width: 400,
+        width: 700,
         display: 'flex',
-        margin: '10px',
+        margin: '50px',
     },
     delete: {
         minWidth: 50,
         minHeight: 50,
         size: 'medium',
     },
+    itemImg: {
+        border: '1px solid #ddd',
+        borderRadius: '4px',
+        padding: '5px',
+        marginRight: '20px',
+        width: '150px',
+    },
 }));
 
-const AvatarListItem = ({ removeItem, index, itemDetails: { productTitle, productPrice, productAvailability } }) => {
+const AvatarListItem = ({ removeItem, index, itemDetails: { productTitle, productPrice, productAvailability, productImg, productUrl } }) => {
     const classes = useStyles();
-
     return (
         <Paper className={classes.paper}>
             <ListItem className={classes.items}>
+                <img className={classes.itemImg} alt="Product" src={productImg}></img>
                 <ListItemText
                     primary={productTitle}
                     secondary={
@@ -59,6 +66,8 @@ const AvatarListItem = ({ removeItem, index, itemDetails: { productTitle, produc
                                 <br />
                                 <Typography component="span" className={classes.ship}>
                                     {productAvailability}
+                                    <br />
+                                    <a href={productUrl}>{productUrl.substr(0, 50)}...</a>
                                 </Typography>
                             </Typography>
                         </React.Fragment>
