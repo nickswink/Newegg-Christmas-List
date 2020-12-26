@@ -46,10 +46,15 @@ export default function AvatarList() {
             alert('URL is not from newegg');
         }
         else {
-            const result = await axios(
-                `http://127.0.0.1:5000/api/resources/products?url=${url}`,
-            );
-            addItem(result.data[0]);
+            try {
+                const result = await axios(
+                    `http://127.0.0.1:5000/api/resources/products?url=${url}`,
+                );
+                addItem(result.data[0]);
+            } catch (error) {
+                console.log(error);
+            }
+
         }
     };
 
