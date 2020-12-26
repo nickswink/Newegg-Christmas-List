@@ -6,6 +6,7 @@ import AvatarListItem from './AvatarListItem';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,42 +32,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// will be asynchronous function to api 
-const fetchItemDetails = (url) => {
-    let key = Math.ceil(Math.random() * 100);
-    let data = {
-        index: key.toString(),  // will need a real key later
-        itemName: 'Dell S2421HGF 24inch FHD TN, Anti-Glare Gaming Monitor - 1ms Response time, 1080p 144Hz, LED edgelight System, AMD FreeSync Premium, VESA, Gray',
-        availability: 'In stock',
-        price: '129.99',
-    };
-    return data;
-};
-
-
 export default function AvatarList() {
     const classes = useStyles();
     const [url, setUrl] = useState('');
-    const [itemDetails, setItemDetails] = useState({});
     const [items, setItems] = useState([]);
-    // let processLink = () => {
-    //     
-    // };
+
 
     const addItem = (itemDetails) => {
         const newItems = [...items, itemDetails];
         setItems(newItems);
     };
 
-    let handleSubmit = (e) => {
+    let handleSubmit = async (e) => {
         e.preventDefault();
-        setItemDetails(fetchItemDetails(url)); // will be asynchronous
-        console.log(itemDetails);
-        addItem(itemDetails);
-    };
-
-    let updateUrl = (e) => {
-        setUrl(e.target.value);
+        const result = await axios(
+            `http://127.0.0.1:5000/api/resources/products?url=${url}`,
+        )
+        addItem(result.data[0]);
     };
 
     let removeItem = (index) => {
@@ -75,12 +57,11 @@ export default function AvatarList() {
         setItems(newItems);
     };
 
-
     return (
         <div>
             <form className={classes.formControl} onSubmit={handleSubmit}>
-                <TextField id="outlined-basic" label="Amazon Url" variant="outlined" name='newItem' onChange={updateUrl} />
-                <Button variant="contained" color="primary" type="submit" value="Submit">
+                <TextField id="outlined-basic" label="Amazon Url" variant="outlined" name='newItem' onChange={e => setUrl(e.target.value)} value={url} />
+                <Button variant="contained" color="primary" type="submit">
                     <AddIcon className={classes.extendedIcon} />
                 </Button>
             </form>
@@ -91,7 +72,8 @@ export default function AvatarList() {
                     <>
                         <AvatarListItem
                             itemDetails={item}
-                            key={index} index={index}
+                            key={index}
+                            index={index}
                             removeItem={removeItem}
                         />
                         <Divider variant="middle" component="li" />
