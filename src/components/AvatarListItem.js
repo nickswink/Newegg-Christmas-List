@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
             color: 'green',
         }
     },
-    price: {
+    ship: {
         display: 'inline',
         color: 'green',
     },
@@ -56,10 +56,10 @@ const AvatarListItem = ({ removeItem, index, itemDetails: { productTitle, produc
                                 color='error'
                             >
                                 ${productPrice}
-                            </Typography>
-                            <br />
-                            <Typography component="span" className={classes.price}>
-                                {productAvailability}
+                                <br />
+                                <Typography component="span" className={classes.ship}>
+                                    {productAvailability}
+                                </Typography>
                             </Typography>
                         </React.Fragment>
                     }
