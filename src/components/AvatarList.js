@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -37,6 +37,10 @@ export default function AvatarList() {
     const [url, setUrl] = useState('');
     const [items, setItems] = useState([]);
 
+    const addItem = (itemDetails) => {
+        const newItems = [...items, itemDetails];
+        setItems(newItems);
+    };
 
     let handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,7 +59,7 @@ export default function AvatarList() {
     return (
         <div>
             <form className={classes.formControl} onSubmit={handleSubmit}>
-                <TextField id="outlined-basic" label="Amazon Url" variant="outlined" name='newItem' onChange={e => setUrl(e.target.value)} value={url} />
+                <TextField id="outlined-basic" label="Newegg Product Url" variant="outlined" name='newItem' onChange={e => setUrl(e.target.value)} value={url} />
                 <Button variant="contained" color="primary" type="submit">
                     <AddIcon className={classes.extendedIcon} />
                 </Button>
