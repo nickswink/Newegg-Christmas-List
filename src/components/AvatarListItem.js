@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 
 
 const useStyles = makeStyles(() => ({
@@ -43,9 +44,18 @@ const useStyles = makeStyles(() => ({
         marginRight: '20px',
         width: '150px',
     },
+    quantity: {
+        minWidth: 50,
+        minHeight: 50,
+        height: "25%",
+        border: 'none',
+        marginRight: '15px',
+        backgroundColor: 'rgb(248,248,255)',
+    }
 }));
 
-const AvatarListItem = ({ removeItem, index, itemDetails: { productTitle, productPrice, productAvailability, productImg, productUrl } }) => {
+const AvatarListItem = ({ quantityCallBack, removeItem, index, itemDetails: { productTitle, productPrice, productAvailability, productImg, productUrl, productQuantity } }) => {
+
     const classes = useStyles();
     return (
         <Paper className={classes.paper}>
@@ -62,7 +72,7 @@ const AvatarListItem = ({ removeItem, index, itemDetails: { productTitle, produc
                                 className={classes.inline}
                                 color='error'
                             >
-                                ${productPrice}
+                                {isNaN(productPrice) ? "Unavailable" : `$${(productPrice * productQuantity).toFixed(2)}`}
                                 <br />
                                 <Typography component="span" className={classes.ship}>
                                     {productAvailability}
@@ -74,6 +84,16 @@ const AvatarListItem = ({ removeItem, index, itemDetails: { productTitle, produc
                     }
                 />
             </ListItem>
+            <TextField
+                id="outlined-basic"
+                type="number"
+                variant="outlined"
+                name='quantity'
+                value={productQuantity}
+                onChange={(e) => {
+                    e.target.value < 1 ? (e.target.value = 1) :
+                        quantityCallBack(index, e.target.value);
+                }} />
             <Fab className={classes.delete} color="secondary" aria-label="delete" size="medium" onClick={() => removeItem(index)}>
                 <DeleteIcon />
             </Fab>

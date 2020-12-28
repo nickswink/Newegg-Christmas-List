@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -29,14 +29,20 @@ const useStyles = makeStyles((theme) => ({
 export default function AvatarList() {
     const classes = useStyles();
     const [url, setUrl] = useState('');
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState(JSON.parse((localStorage.getItem('itemList'))) || []);
 
+    // Persistant item list via local storage
+    useEffect(() => {
+        localStorage.setItem('itemList', JSON.stringify(items));
+    }, [items]);
 
+    // add new fetched item to list
     const addItem = (itemDetails) => {
         const newItems = [...items, itemDetails];
         setItems(newItems);
     };
 
+    // fetch data and call addItem to add item details
     let handleSubmit = async (e) => {
         e.preventDefault();
         if (url === '') {
@@ -54,14 +60,22 @@ export default function AvatarList() {
             } catch (error) {
                 console.log(error);
             }
-
         }
     };
 
+    // remove items from list
     let removeItem = (index) => {
         const newItems = [...items];
         newItems.splice(index, 1);
         setItems(newItems);
+    };
+
+    // update quantity state in items from child AvatarListItem
+    let quantityCallBack = (index, quantity) => {
+        let updatedItems = [...items];
+        updatedItems[index].productQuantity = quantity;
+        console.log(updatedItems[index]);
+        setItems(updatedItems);
     };
 
     return (
@@ -82,6 +96,7 @@ export default function AvatarList() {
                             key={index}
                             index={index}
                             removeItem={removeItem}
+                            quantityCallBack={quantityCallBack}
                         />
                         <Divider variant="middle" component="li" />
                     </>
