@@ -29,7 +29,8 @@ const useStyles = makeStyles(() => ({
     },
     paper: {
         display: 'flex',
-        width: 700,
+        minWidth: 70,
+        maxWidth: 700,
         margin: '50px',
     },
     delete: {
@@ -43,7 +44,8 @@ const useStyles = makeStyles(() => ({
         borderRadius: '4px',
         padding: '5px',
         marginRight: '20px',
-        width: '150px',
+        width: 150,
+        height: "auto",
     },
     quantity: {
         marginTop: '5px',
@@ -66,8 +68,7 @@ const AvatarListItem = ({
         productImg,
         productUrl,
         productQuantity
-    }
-}) => {
+    } }) => {
 
     const classes = useStyles();
     return (

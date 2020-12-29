@@ -6,17 +6,21 @@ import Grid from '@material-ui/core/Grid';
 const App = () => {
   return (
     <>
+
       <Grid container>
-        <Appbar />
-        <Grid container spacing={1}>
-          <Grid container item xs={1} sm={2} spacing={1}>
-          </Grid>
-          <Grid container item xs={10} sm={8} spacing={1} justify='center'>
-            <AvatarList />
-          </Grid>
-          <Grid container item xs={1} sm={2} spacing={1}>
-          </Grid>
+
+        <Grid item xs={12} sm={12}>
+          <Appbar />
         </Grid>
+
+        <Grid item xs={12} sm={2} />
+
+        <Grid item xs={12} sm={8}>
+          <AvatarList />
+        </Grid>
+
+        <Grid item xs={12} sm={2} />
+
       </Grid>
     </>
   );

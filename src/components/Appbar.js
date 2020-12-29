@@ -3,9 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import '../fonts/FiraSans-Regular.ttf';
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        display: 'flex',
         flexGrow: 1,
         marginBottom: '20px'
     },
@@ -13,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     },
     title: {
+        fontFamily: 'Roboto',
         flexGrow: 1,
         margin: "5px",
     },
@@ -37,7 +40,7 @@ export default function Appbar() {
                             alt="Newegg"
                         />
                     </a>
-                    <Typography variant="h3" className={classes.title}>
+                    <Typography variant="h4" className={classes.title}>
                         Wish List
                     </Typography>
                 </Toolbar>

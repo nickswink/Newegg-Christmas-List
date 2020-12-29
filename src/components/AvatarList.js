@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -11,17 +11,21 @@ import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
         backgroundColor: theme.palette.background.paper,
     },
     inline: {
         display: 'inline',
     },
     formControl: {
+        display: 'flex',
+        justifyContent: 'center',
         margin: "auto",
         minWidth: 120,
+    },
+    center: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     extendedIcon: {
         margin: '10px',
@@ -40,12 +44,12 @@ const scrollToBottom = function () {
     });
 };
 
-
-
 export default function AvatarList() {
     const classes = useStyles();
     const [url, setUrl] = useState('');
     const [items, setItems] = useState(JSON.parse((localStorage.getItem('itemList'))) || []);
+    const inputUrlRef = useRef(null);
+    // ref for input focus
     // Persistant item list via local storage
     useEffect(() => {
         localStorage.setItem('itemList', JSON.stringify(items));
@@ -64,10 +68,12 @@ export default function AvatarList() {
         e.preventDefault();
         // error handling
         if (url === '') {
-            alert('Fill out url');
+            inputUrlRef.current.focus();
         }
         else if (url.substr(0, 23) !== 'https://www.newegg.com/') {
             alert('URL is not from newegg');
+            setUrl('');
+            inputUrlRef.current.focus();
         }
         // fetch data
         else {
@@ -105,9 +111,9 @@ export default function AvatarList() {
             <form className={classes.formControl} onSubmit={handleSubmit}>
                 <TextField
                     id="outlined-basic"
+                    inputRef={inputUrlRef}
                     label="Newegg Product Url"
                     variant="outlined"
-                    name='newItem'
                     value={url}
                     onChange={e => setUrl(e.target.value)}
                 />
@@ -116,7 +122,7 @@ export default function AvatarList() {
                 </Button>
             </form>
 
-            <List >
+            <List className={classes.center}>
                 {(items.length < 1) ? <div>Your cart is empty...</div>
                     :
                     (items.map((item, index) => (
