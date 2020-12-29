@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     },
     items: {
         display: 'flex',
-        alignItems: "flex-start",
+        alignItems: "center",
         textOverflow: 'wrap',
         marginBottom: '15px',
 
@@ -30,10 +30,10 @@ const useStyles = makeStyles(() => ({
     paper: {
         display: 'flex',
         width: 700,
-        display: 'flex',
         margin: '50px',
     },
     delete: {
+        margin: "5px",
         minWidth: 50,
         minHeight: 50,
         size: 'medium',
@@ -46,8 +46,8 @@ const useStyles = makeStyles(() => ({
         width: '150px',
     },
     quantity: {
-        minWidth: 50,
-        minHeight: 50,
+        marginTop: '5px',
+        width: 85,
         height: "25%",
         border: 'none',
         marginRight: '15px',
@@ -71,7 +71,7 @@ const AvatarListItem = ({
 
     const classes = useStyles();
     return (
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} elevation={5}>
             <ListItem className={classes.items}>
                 <img className={classes.itemImg} alt="Product" src={productImg}></img>
                 <ListItemText
@@ -90,7 +90,7 @@ const AvatarListItem = ({
                                 <Typography component="span" className={classes.ship}>
                                     {productAvailability}
                                     <br />
-                                    <a href={productUrl}>{productUrl.substr(0, 50)}...</a>
+                                    <a href={productUrl} target="_blank" rel="noreferrer">{productUrl.substr(0, 50)}...</a>
                                 </Typography>
                             </Typography>
                         </React.Fragment>
@@ -98,14 +98,20 @@ const AvatarListItem = ({
                 />
             </ListItem>
             <TextField
+                className={classes.quantity}
                 id="outlined-basic"
                 type="number"
                 variant="outlined"
                 name='quantity'
                 value={productQuantity}
                 onChange={(e) => {
-                    e.target.value < 1 ? (e.target.value = 1) :
+                    if (e.target.value < 1) {
+                        e.target.value = 1;
+                    } else if (e.target.value > 20) {
+                        e.target.value = 20;
+                    } else {
                         quantityCallBack(index, e.target.value);
+                    }
                 }}
             />
             <Fab className={classes.delete}

@@ -6,18 +6,21 @@ import AvatarListItem from './AvatarListItem';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { animateScroll } from "react-scroll";
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
         backgroundColor: theme.palette.background.paper,
     },
     inline: {
         display: 'inline',
     },
     formControl: {
-        margin: theme.spacing(1),
-        marginBottom: '50px',
+        margin: "auto",
         minWidth: 120,
     },
     extendedIcon: {
@@ -25,17 +28,24 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(1),
     },
     totalPrice: {
-        fontWeight: "normal",
         display: "flex",
         justifyContent: "flex-end",
+        fontWeight: "normal",
     }
 }));
+
+const scrollToBottom = function () {
+    animateScroll.scrollToBottom({
+        containerId: "options-holder"
+    });
+};
+
+
 
 export default function AvatarList() {
     const classes = useStyles();
     const [url, setUrl] = useState('');
     const [items, setItems] = useState(JSON.parse((localStorage.getItem('itemList'))) || []);
-
     // Persistant item list via local storage
     useEffect(() => {
         localStorage.setItem('itemList', JSON.stringify(items));
@@ -45,10 +55,12 @@ export default function AvatarList() {
     const addItem = (itemDetails) => {
         const newItems = [...items, itemDetails];
         setItems(newItems);
+        scrollToBottom();
     };
 
     // fetch data and call addItem to add item details
     let handleSubmit = async (e) => {
+
         e.preventDefault();
         // error handling
         if (url === '') {
@@ -105,21 +117,23 @@ export default function AvatarList() {
             </form>
 
             <List >
-                {items.map((item, index) => (
-                    <>
-                        <AvatarListItem
-                            itemDetails={item}
-                            key={index}
-                            index={index}
-                            removeItem={removeItem}
-                            quantityCallBack={quantityCallBack}
-                        />
-                        <Divider variant="middle" component="li" />
-                    </>
-                ))}
+                {(items.length < 1) ? <div>Your cart is empty...</div>
+                    :
+                    (items.map((item, index) => (
+                        <>
+                            <AvatarListItem
+                                itemDetails={item}
+                                key={index}
+                                index={index}
+                                removeItem={removeItem}
+                                quantityCallBack={quantityCallBack}
+                            />
+                            <Divider variant="middle" component="li" />
+                        </>
+                    )))
+                }
             </List>
             <h2 className={classes.totalPrice}>Est. Total: ${totalPrice.toFixed(2)}</h2>
-
         </div >
     );
 };

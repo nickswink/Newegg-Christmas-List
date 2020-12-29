@@ -3,8 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,7 +14,13 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
+        margin: "5px",
     },
+    headerImg: {
+        padding: '10px',
+        width: 175,
+        height: 'auto',
+    }
 }));
 
 export default function Appbar() {
@@ -24,13 +28,17 @@ export default function Appbar() {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" className={classes.appBar}>
+            <AppBar position="static">
                 <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" className={classes.title}>
-                        Christmas List
+                    <a href="https://www.newegg.com/" title="Newegg.com" target="_blank" rel="noreferrer">
+                        <img
+                            className={classes.headerImg}
+                            src="https://c1.neweggimages.com/webResource/Themes/Nest/logos/logo_424x210.png"
+                            alt="Newegg"
+                        />
+                    </a>
+                    <Typography variant="h3" className={classes.title}>
+                        Wish List
                     </Typography>
                 </Toolbar>
             </AppBar>
