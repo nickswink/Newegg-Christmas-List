@@ -11,7 +11,7 @@ const App = () => {
         <Grid container spacing={1}>
           <Grid container item xs={1} sm={2} spacing={1}>
           </Grid>
-          <Grid container item xs={12} sm={8} spacing={1} justify='center'>
+          <Grid container item xs={10} sm={8} spacing={1} justify='center'>
             <AvatarList />
           </Grid>
           <Grid container item xs={1} sm={2} spacing={1}>

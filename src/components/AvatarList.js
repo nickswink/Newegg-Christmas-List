@@ -24,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
         margin: '10px',
         marginRight: theme.spacing(1),
     },
+    totalPrice: {
+        fontWeight: "normal",
+        display: "flex",
+        justifyContent: "flex-end",
+    }
 }));
 
 export default function AvatarList() {
@@ -45,18 +50,21 @@ export default function AvatarList() {
     // fetch data and call addItem to add item details
     let handleSubmit = async (e) => {
         e.preventDefault();
+        // error handling
         if (url === '') {
             alert('Fill out url');
         }
-        if (url.substr(0, 23) !== 'https://www.newegg.com/') {
+        else if (url.substr(0, 23) !== 'https://www.newegg.com/') {
             alert('URL is not from newegg');
         }
+        // fetch data
         else {
             try {
                 const result = await axios(
                     `http://127.0.0.1:5000/api/resources/products?url=${url}`,
                 );
                 addItem(result.data[0]);
+                setUrl('');
             } catch (error) {
                 console.log(error);
             }
@@ -74,19 +82,27 @@ export default function AvatarList() {
     let quantityCallBack = (index, quantity) => {
         let updatedItems = [...items];
         updatedItems[index].productQuantity = quantity;
-        console.log(updatedItems[index]);
         setItems(updatedItems);
     };
+
+    // Keep track of the total price
+    const totalPrice = items.reduce((priceTotal, item) => priceTotal + (item.productPrice * item.productQuantity), 0);
 
     return (
         <div className={classes.root}>
             <form className={classes.formControl} onSubmit={handleSubmit}>
-                <TextField id="outlined-basic" label="Newegg Product Url" variant="outlined" name='newItem' onChange={e => setUrl(e.target.value)} value={url} />
+                <TextField
+                    id="outlined-basic"
+                    label="Newegg Product Url"
+                    variant="outlined"
+                    name='newItem'
+                    value={url}
+                    onChange={e => setUrl(e.target.value)}
+                />
                 <Button variant="contained" color="primary" type="submit">
                     <AddIcon className={classes.extendedIcon} />
                 </Button>
             </form>
-            <h2>Total: </h2>
 
             <List >
                 {items.map((item, index) => (
@@ -102,6 +118,8 @@ export default function AvatarList() {
                     </>
                 ))}
             </List>
+            <h2 className={classes.totalPrice}>Est. Total: ${totalPrice.toFixed(2)}</h2>
+
         </div >
     );
-}
+};

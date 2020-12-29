@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
@@ -28,6 +28,7 @@ const useStyles = makeStyles(() => ({
 
     },
     paper: {
+        display: 'flex',
         width: 700,
         display: 'flex',
         margin: '50px',
@@ -54,7 +55,19 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const AvatarListItem = ({ quantityCallBack, removeItem, index, itemDetails: { productTitle, productPrice, productAvailability, productImg, productUrl, productQuantity } }) => {
+const AvatarListItem = ({
+    quantityCallBack,
+    removeItem,
+    index,
+    itemDetails: {
+        productTitle,
+        productPrice,
+        productAvailability,
+        productImg,
+        productUrl,
+        productQuantity
+    }
+}) => {
 
     const classes = useStyles();
     return (
@@ -93,8 +106,13 @@ const AvatarListItem = ({ quantityCallBack, removeItem, index, itemDetails: { pr
                 onChange={(e) => {
                     e.target.value < 1 ? (e.target.value = 1) :
                         quantityCallBack(index, e.target.value);
-                }} />
-            <Fab className={classes.delete} color="secondary" aria-label="delete" size="medium" onClick={() => removeItem(index)}>
+                }}
+            />
+            <Fab className={classes.delete}
+                color="secondary"
+                aria-label="delete"
+                size="medium"
+                onClick={() => removeItem(index)}>
                 <DeleteIcon />
             </Fab>
         </Paper>
