@@ -72,6 +72,7 @@ const AvatarListItem = ({
 
     const classes = useStyles();
     return (
+
         <Paper className={classes.paper} elevation={5}>
             <ListItem className={classes.items}>
                 <img className={classes.itemImg} alt="Product" src={productImg}></img>
@@ -123,6 +124,7 @@ const AvatarListItem = ({
                 <DeleteIcon />
             </Fab>
         </Paper>
+
     );
 };
 
