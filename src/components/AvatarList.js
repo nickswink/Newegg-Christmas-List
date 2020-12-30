@@ -79,7 +79,7 @@ export default function AvatarList() {
         else {
             try {
                 const result = await axios(
-                    `http://127.0.0.1:5000/api/resources/products?url=${url}`,
+                    `http://54.81.156.32:5000/api/resources/products?url=${url}`,
                 );
                 addItem(result.data[0]);
                 setUrl('');
